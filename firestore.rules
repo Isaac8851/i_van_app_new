@@ -1,0 +1,31 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow users to create/read/update only their own profile
+    match /users/{uid} {
+      allow read, update: if request.auth.uid == uid;
+      // No create/delete client-side
+    }
+    match /routes/{routeId} {
+      allow read: if request.auth.uid == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.routeId && routeId == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.routeId;
+      allow update: if (
+        // student cancel
+        request.auth.uid in resource.data.studentIds &&
+        request.resource.data.studentIds == resource.data.studentIds.diff([request.auth.uid]) &&
+        request.resource.data.routeId == null
+      ) || (
+        // driver controls/status
+        request.auth.uid == resource.data.driverId
+      );
+    }
+    match /vans/{driverId}/location {
+      allow write: if request.auth.uid == driverId;
+      allow read: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.routeId == resource.data.routeId;
+    }
+    // Everything else remains locked down
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 

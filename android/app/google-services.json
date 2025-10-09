@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1038492339763",
+    "project_id": "ivan-app-ed30b",
+    "storage_bucket": "ivan-app-ed30b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038492339763:android:80582133f456899b569d46",
+        "android_client_info": {
+          "package_name": "com.fetch.i_van_app_new"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpxZve6At9IpsacucqCEm9f0a5s2OmjzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
