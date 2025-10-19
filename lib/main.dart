@@ -9,6 +9,10 @@ import 'lib/screens/login_screen.dart';
 import 'lib/screens/register_screen.dart';
 import 'ui/screens/student/student_main_screen.dart';
 import 'ui/screens/driver/driver_main_screen.dart';
+import 'services/route_service.dart';
+import 'services/van_location_service.dart';
+import 'services/driver_service.dart';
+import 'services/chat_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,6 +70,10 @@ class IVan extends StatelessWidget {
       providers: [
         Provider(create: (_) => AuthService()),
         Provider(create: (_) => FirestoreService()),
+        Provider(create: (_) => RouteService()),
+        Provider(create: (_) => VanLocationService()),
+        Provider(create: (_) => DriverService()),
+        Provider(create: (_) => ChatService()),
       ],
       child: MaterialApp(
         title: 'iVan',

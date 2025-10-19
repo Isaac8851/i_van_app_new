@@ -8,19 +8,29 @@ class StopModel {
   StopModel({required this.lat, required this.lng, this.label});
 
   factory StopModel.fromMap(Map<String, dynamic> data) {
-    return StopModel(
-      lat: (data['lat'] as num).toDouble(),
-      lng: (data['lng'] as num).toDouble(),
-      label: data['label'] as String?,
-    );
+    // Handle both GeoPoint and lat/lng formats
+    if (data['location'] != null && data['location'] is GeoPoint) {
+      final GeoPoint geoPoint = data['location'] as GeoPoint;
+      return StopModel(
+        lat: geoPoint.latitude,
+        lng: geoPoint.longitude,
+        label: data['label'] as String?,
+      );
+    } else {
+      return StopModel(
+        lat: (data['lat'] as num).toDouble(),
+        lng: (data['lng'] as num).toDouble(),
+        label: data['label'] as String?,
+      );
+    }
   }
 
   Map<String, dynamic> toMap() => {
-    'lat': lat,
-    'lng': lng,
-    if (label != null) 'label': label,
-  };
+        'location': GeoPoint(lat, lng),
+        if (label != null) 'label': label,
+      };
 }
+
 
 class RouteModel {
   final String driverId;
