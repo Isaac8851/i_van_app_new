@@ -28,7 +28,7 @@ plugins {
 }
 
 android {
-    namespace "com.example.i_van_app_new"
+    namespace "com.example.development"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.i_van_app_new"
+        applicationId "com.example.development"
         minSdkVersion 21
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()

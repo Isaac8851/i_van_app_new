@@ -1,6 +1,6 @@
 specVersion: "v1"
 serviceId: "ivanappnew"
-location: "us-east4"
+location: "europe-west3"
 schema:
   source: "./schema"
   datasource:

@@ -17,6 +17,7 @@
     {
       "codebase": "ivan-main-functions",
       "source": "ivan-main-functions",
+      "region": "europe-west3",
       "ignore": [
         "node_modules",
         ".git",
