@@ -1,0 +1,65 @@
+type User @table {
+  authId: String!
+  role: String!
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  phoneNumber: String
+  photoUrl: String
+}
+
+type School @table {
+  name: String!
+  address: String!
+  createdAt: Timestamp!
+  contactEmail: String
+  contactPhoneNumber: String
+}
+
+type Bus @table {
+  licensePlate: String!
+  capacity: Int!
+  model: String!
+  school: School!
+  createdAt: Timestamp!
+  make: String
+  year: Int
+}
+
+type BusRoute @table {
+  name: String!
+  school: School!
+  createdAt: Timestamp!
+  description: String
+  estimatedDuration: Int
+}
+
+type BusStop @table {
+  name: String!
+  latitude: Float!
+  longitude: Float!
+  school: School!
+  createdAt: Timestamp!
+  address: String
+  description: String
+  scheduledTime: Timestamp
+}
+
+type Student @table {
+  firstName: String!
+  lastName: String!
+  school: School!
+  createdAt: Timestamp!
+  grade: String
+  parentUser: User
+  assignedBusStop: BusStop
+}
+
+type AssignedRoute @table(key: ["bus", "busRoute", "driverUser"]) {
+  bus: Bus!
+  busRoute: BusRoute!
+  driverUser: User!
+  startDate: Timestamp!
+  createdAt: Timestamp!
+  endDate: Timestamp
+}

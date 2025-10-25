@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --------------------------------------------------
+    // USERS: each user reads/writes only their own profile
+    // --------------------------------------------------
+    match /users/{uid} {
+      allow read, update, delete: if request.auth.uid == uid;
+      allow create: if request.auth.uid != null;
+    }
+
+    // --------------------------------------------------
+    // DRIVERS:  
+    //   • driver publishes their own telemetry  
+    //   • students on that driver’s route can read it  
+    // --------------------------------------------------
+    match /drivers/{driverId} {
+      // driver pushes location/isActive
+      allow write: if request.auth.uid == driverId;
+
+      // students read only if they’re assigned to that driver’s route
+      allow read: if request.auth.uid != null
+        && exists(/databases/$(database)/documents/routes/{routeId})
+        && get(/databases/$(database)/documents/routes/$(routeId)).data.driverId == driverId
+        && request.auth.uid in get(/databases/$(database)/documents/routes/$(routeId)).data.studentIds;
+      
+      // (optional) admins can read/write
+      allow read, write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
+    // --------------------------------------------------
+    // ROUTES:
+    //   • driver and assigned students can read  
+    //   • driver can update  
+    //   • students cannot modify routes  
+    // --------------------------------------------------
+    match /routes/{routeId} {
+      // anyone on the route (driver or student) can read
+      allow read: if request.auth.uid != null
+        && (
+             request.auth.uid == resource.data.driverId
+          || request.auth.uid in resource.data.studentIds
+           )
+        // or admins also
+        || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+
+      // driver updates their own route (e.g. status, stops)
+      allow write: if request.auth.uid == resource.data.driverId;
+
+      // create only by admin for now
+      allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
+    // --------------------------------------------------
+    // FALLBACK: deny everything else
+    // --------------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

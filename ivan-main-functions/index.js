@@ -1,32 +1,63 @@
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+
+// Initialize Firebase Admin SDK
+admin.initializeApp();
+const db = admin.firestore();
+
 /**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ * Trigger: When a new user is created in Firebase Authentication.
  */
+exports.onUserCreate = functions.auth.user().onCreate(async (user) => {
+  try {
+    const userRef = db.collection("users").doc(user.uid);
 
-const {setGlobalOptions} = require("firebase-functions");
-// const {onRequest} = require("firebase-functions/https");
-// const logger = require("firebase-functions/logger");
+    // Define base user data
+    const userData = {
+      email: user.email || null,
+      role: "student", // default role (can be changed later)
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({maxInstances: 10});
+    // Add user document to Firestore
+    await userRef.set(userData);
+    console.log(`User doc created for ${user.uid}`);
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+    // If driver, also create a driver doc
+    if (userData.role === "driver") {
+      await db.collection("drivers").doc(user.uid).set({
+        isActive: false,
+        lastUpdated: null,
+      });
+      console.log(`Driver doc created for ${user.uid}`);
+    }
+  } catch (error) {
+    console.error("Error creating Firestore user:", error);
+  }
+});
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+/**
+ * Trigger: When a Firebase user is deleted.
+ */
+exports.onUserDelete = functions.auth.user().onDelete(async (user) => {
+  try {
+    const uid = user.uid;
+
+    // Delete from users collection
+    await db.collection("users").doc(uid).delete();
+    console.log(`Deleted user doc for ${uid}`);
+
+    // Delete from drivers collection if exists
+    const driverRef = db.collection("drivers").doc(uid);
+    const driverDoc = await driverRef.get();
+
+    if (driverDoc.exists) {
+      await driverRef.delete();
+      console.log(`Deleted driver doc for ${uid}`);
+    }
+
+    // TODO: Optionally remove from route.studentIds array later
+  } catch (error) {
+    console.error("Error cleaning up deleted user:", error);
+  }
+});

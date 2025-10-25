@@ -1,0 +1,24 @@
+mutation CreateSchool($name: String!, $address: String!) @auth(level: USER) {
+  school_insert(data: {name: $name, address: $address, createdAt_expr: "request.time"})
+}
+
+query ListBusStopsBySchool($schoolId: UUID!) @auth(level: USER) {
+  busStops(where: {schoolId: {eq: $schoolId}}) {
+    id
+    name
+    latitude
+    longitude
+  }
+}
+
+mutation AssignStudentToBusStop($studentId: UUID!, $busStopId: UUID) @auth(level: USER) {
+  student_update(key: {id: $studentId}, data: {assignedBusStopId: $busStopId})
+}
+
+query ListUsersByRole($role: String!) @auth(level: USER) {
+  users(where: {role: {eq: $role}}) {
+    id
+    displayName
+    email
+  }
+}

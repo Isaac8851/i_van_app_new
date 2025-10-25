@@ -1,0 +1,128 @@
+mutation CreateDemoData @auth(level: NO_ACCESS) @transaction {
+  school_insertMany(
+    data: [
+      {
+        id: "550e8400-e29b-41d4-a716-446655440000"
+        address: "123 Main St"
+        name: "Example High School"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440001"
+        address: "456 Elm St"
+        name: "Another School"
+        createdAt: "2024-04-25T10:00:00Z"
+      }
+    ]
+  )
+  user_insertMany(
+    data: [
+      {
+        id: "650e8400-e29b-41d4-a716-446655440000"
+        authId: "auth01"
+        displayName: "Parent User 1"
+        role: "parent"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+      {
+        id: "650e8400-e29b-41d4-a716-446655440001"
+        authId: "auth02"
+        displayName: "Driver User 1"
+        role: "driver"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+    ]
+  )
+  busRoute_insertMany(
+    data: [
+      {
+        id: "750e8400-e29b-41d4-a716-446655440000"
+        schoolId: "550e8400-e29b-41d4-a716-446655440000"
+        name: "Route A"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+      {
+        id: "750e8400-e29b-41d4-a716-446655440001"
+        schoolId: "550e8400-e29b-41d4-a716-446655440001"
+        name: "Route B"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+    ]
+  )
+  bus_insertMany(
+    data: [
+      {
+        id: "850e8400-e29b-41d4-a716-446655440000"
+        schoolId: "550e8400-e29b-41d4-a716-446655440000"
+        capacity: 30
+        model: "Ford"
+        licensePlate: "ABC-123"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+      {
+        id: "850e8400-e29b-41d4-a716-446655440001"
+        schoolId: "550e8400-e29b-41d4-a716-446655440001"
+        capacity: 40
+        model: "Chevy"
+        licensePlate: "DEF-456"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+    ]
+  )
+  busStop_insertMany(
+    data: [
+      {
+        id: "950e8400-e29b-41d4-a716-446655440000"
+        schoolId: "550e8400-e29b-41d4-a716-446655440000"
+        name: "Stop 1"
+        latitude: 34.0522
+        longitude: -118.2437
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+      {
+        id: "950e8400-e29b-41d4-a716-446655440001"
+        schoolId: "550e8400-e29b-41d4-a716-446655440001"
+        name: "Stop 2"
+        latitude: 37.7749
+        longitude: -122.4194
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+    ]
+  )
+  student_insertMany(
+    data: [
+      {
+        id: "a50e8400-e29b-41d4-a716-446655440000"
+        schoolId: "550e8400-e29b-41d4-a716-446655440000"
+        firstName: "Alice"
+        lastName: "Smith"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+      {
+        id: "a50e8400-e29b-41d4-a716-446655440001"
+        schoolId: "550e8400-e29b-41d4-a716-446655440001"
+        firstName: "Bob"
+        lastName: "Johnson"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+    ]
+  )
+  assignedRoute_insertMany(
+    data: [
+      {
+        busId: "850e8400-e29b-41d4-a716-446655440000"
+        busRouteId: "750e8400-e29b-41d4-a716-446655440000"
+        driverUserId: "650e8400-e29b-41d4-a716-446655440001"
+        startDate: "2024-04-29T07:00:00Z"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+      {
+        busId: "850e8400-e29b-41d4-a716-446655440001"
+        busRouteId: "750e8400-e29b-41d4-a716-446655440001"
+        driverUserId: "650e8400-e29b-41d4-a716-446655440001"
+        startDate: "2024-04-30T07:30:00Z"
+        createdAt: "2024-04-26T12:00:00Z"
+      }
+    ]
+  )
+}
