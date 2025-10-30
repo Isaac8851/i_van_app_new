@@ -37,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               } catch (e) {
                 if (mounted) {
                   Navigator.of(context).pop();
-                  _showDemoMessage('Error signing out: ${e.toString()}');
+                  // Error is already handled by AuthService
                 }
               }
             },
@@ -67,9 +67,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _notificationsEnabled = value;
+                // TODO: Implement actual notification preference update
               });
-              _showDemoMessage(
-                  'Notifications ${value ? 'enabled' : 'disabled'}');
             },
           ),
           SwitchListTile(
@@ -79,9 +78,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _notificationsEnabled = value;
+                // TODO: Implement actual trip reminders preference update
               });
-              _showDemoMessage(
-                  'Trip reminders ${value ? 'enabled' : 'disabled'}');
             },
           ),
           SwitchListTile(
@@ -91,9 +89,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _notificationsEnabled = value;
+                // TODO: Implement actual driver messages preference update
               });
-              _showDemoMessage(
-                  'Driver messages ${value ? 'enabled' : 'disabled'}');
             },
           ),
 
@@ -108,9 +105,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _locationEnabled = value;
+                // TODO: Implement actual location services preference update
               });
-              _showDemoMessage(
-                  'Location services ${value ? 'enabled' : 'disabled'}');
             },
           ),
           SwitchListTile(
@@ -120,9 +116,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _locationEnabled = value;
+                // TODO: Implement actual background location preference update
               });
-              _showDemoMessage(
-                  'Background location ${value ? 'enabled' : 'disabled'}');
             },
           ),
 
@@ -137,8 +132,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _darkMode = value;
+                // TODO: Implement actual theme update
               });
-              _showDemoMessage('Dark mode ${value ? 'enabled' : 'disabled'}');
             },
           ),
           SwitchListTile(
@@ -148,9 +143,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _autoAcceptTrips = value;
+                // TODO: Implement actual auto-accept trips preference update
               });
-              _showDemoMessage(
-                  'Auto-accept trips ${value ? 'enabled' : 'disabled'}');
             },
           ),
 
@@ -163,7 +157,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Edit Profile'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Profile editing coming soon');
+              // TODO: Navigate to profile editing screen
             },
           ),
           ListTile(
@@ -171,7 +165,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Change Password'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Password change coming soon');
+              // TODO: Navigate to password change screen
             },
           ),
           ListTile(
@@ -179,7 +173,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Privacy Settings'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Privacy settings coming soon');
+              // TODO: Navigate to privacy settings screen
             },
           ),
 
@@ -192,7 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Help & FAQ'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Help section coming soon');
+              // TODO: Navigate to help & FAQ screen
             },
           ),
           ListTile(
@@ -200,7 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Contact Support'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Contact support coming soon');
+              // TODO: Implement contact support functionality
             },
           ),
           ListTile(
@@ -208,7 +202,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Report a Bug'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Bug reporting coming soon');
+              // TODO: Implement bug reporting functionality
             },
           ),
 
@@ -222,7 +216,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle: const Text('1.0.0'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('App version: 1.0.0');
+              // Version info is already displayed in the subtitle
             },
           ),
           ListTile(
@@ -230,7 +224,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Terms of Service'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Terms of service coming soon');
+              // TODO: Open terms of service URL or screen
             },
           ),
           ListTile(
@@ -238,7 +232,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text('Privacy Policy'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              _showDemoMessage('Privacy policy coming soon');
+              // TODO: Open privacy policy URL or screen
             },
           ),
 
@@ -280,23 +274,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _showDemoMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
   void _showDeleteAccountDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Account'),
         content: const Text(
-          'Are you sure you want to delete your account? This action cannot be undone.',
-        ),
+            'Are you sure you want to delete your account? This action cannot be undone.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -305,7 +289,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              _showDemoMessage('Account deletion coming soon');
+              // TODO: Implement account deletion
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('Delete'),

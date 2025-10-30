@@ -3,6 +3,9 @@
         android:label="i_van_app_new"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCWWSpw4su59Wejfscd_4EY9sI_S9GVBDA"/>
         <activity
             android:name="com.example.i_van_app_new.MainActivity"
             android:exported="true"
