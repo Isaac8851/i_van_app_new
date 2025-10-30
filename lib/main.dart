@@ -3,10 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
-import 'lib/services/auth_service.dart';
-import 'lib/services/firestore_service.dart';
-import 'lib/screens/login_screen.dart';
-import 'lib/screens/register_screen.dart';
+import 'package:i_van_app_new/services/auth_service.dart';
+import 'package:i_van_app_new/lib/services/firestore_service.dart';
+import 'package:i_van_app_new/screens/auth/login_screen.dart';
+import 'package:i_van_app_new/lib/screens/register_screen.dart';
 import 'ui/screens/student/student_main_screen.dart';
 import 'ui/screens/driver/driver_main_screen.dart';
 
@@ -131,7 +131,7 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: context.read<AuthService>().userStream,
+      stream: context.read<AuthService>().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
