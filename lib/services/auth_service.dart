@@ -10,6 +10,9 @@ class AuthService {
 
   // Auth state changes stream
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+  
+  // Alias for authStateChanges
+  Stream<User?> get userStream => _auth.authStateChanges();
 
   // Sign in with email and password
   Future<UserCredential> signInWithEmailAndPassword(
